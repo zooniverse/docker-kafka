@@ -1,16 +1,19 @@
-# DOCKER-VERSION 0.9.0
-# VERSION 0.2
+# DOCKER-VERSION 1.2.0
+# VERSION 0.3
 
 FROM ubuntu:12.04
 MAINTAINER Edward Paget <ed@zooniverse.org>
 
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get upgrade -y
+ENV KAFKA_VERSION 0.8.1.1
+ENV SCALA_VERSION 2.10
 
-RUN apt-get install -y -q openjdk-7-jre-headless wget supervisor
-RUN wget -q -O /opt/kafka_2.9.2-0.8.1.tgz http://mirror.symnds.com/software/Apache/kafka/0.8.1/kafka_2.9.2-0.8.1.tgz 
-RUN tar -xzf /opt/kafka_2.9.2-0.8.1.tgz -C /opt
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y -q openjdk-7-jre-headless wget supervisor && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    
+RUN wget -q -O - "http://mirror.sdunix.com/apache/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz" | \
+    tar zx -C /opt/
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD start_kafka.sh /opt/start_kafka.sh
 RUN chmod +x /opt/start_kafka.sh
