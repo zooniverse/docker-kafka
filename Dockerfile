@@ -4,8 +4,8 @@
 FROM zooniverse/java
 MAINTAINER Edward Paget <ed@zooniverse.org>
 
-ENV KAFKA_VERSION 0.8.1.1
-ENV SCALA_VERSION 2.10
+ENV KAFKA_VERSION 0.8.2.0
+ENV SCALA_VERSION 2.11
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get upgrade -y && \
