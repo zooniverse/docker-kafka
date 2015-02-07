@@ -81,9 +81,4 @@ EOF
 
 mkdir -p /opt/kafka/log
 
-cat << EOF >> /etc/supervisor/conf.d/supervisord.conf
-[program:kafka]
-command=/opt/kafka_$KAFKA_VERSION/bin/kafka-server-start.sh /opt/kafka_$KAFKA_VERSION/config/server.properties
-EOF
-
-/usr/bin/supervisord
+./opt/kafka_$KAFKA_VERSION/bin/kafka-server-start.sh /opt/kafka_$KAFKA_VERSION/config/server.properties

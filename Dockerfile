@@ -9,12 +9,11 @@ ENV SCALA_VERSION 2.11
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y -q wget supervisor && \
+    apt-get install -y -q wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN wget -q -O - "http://mirror.sdunix.com/apache/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz" | \
     tar zx -C /opt/
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD start_kafka.sh /opt/start_kafka.sh
 RUN chmod +x /opt/start_kafka.sh
 
