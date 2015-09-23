@@ -21,8 +21,9 @@ PORT=
 ZKS=
 BROKER_ID=
 KAFKA_VERSION="$SCALA_VERSION"-"$KAFKA_VERSION"
+TOPIC_DELETE=false
 
-while getopts "hz:i:H:p:" OPTION
+while getopts "hz:i:H:p:t:" OPTION
 do
   case $OPTION in
     h)
@@ -41,6 +42,9 @@ do
     p)
       PORT=$OPTARG
       ;;
+    t)
+      TOPIC_DELETE=$OPTARG
+      ;;
     ?)
       usage
       exit 1
@@ -54,14 +58,14 @@ then
 fi
 
 if [[ -z $ZKS ]] || [[ -z $BROKER_ID ]] || [[ -z $HOST ]] || [[ -z $PORT ]];
-then 
+then
   usage
   exit 1
 fi
 
-if [[ $HOST == "__aws_local_ip" ]]
+if [[ $HOST == "__aws_local_hostname" ]]
 then
-    HOST=$(wget -O - -o /dev/null http://169.254.169.254/latest/meta-data/local-ipv4)
+    HOST=$(hostname)
 fi
 
 cat << EOF > "/opt/kafka_$KAFKA_VERSION/config/server.properties"
@@ -74,8 +78,9 @@ num.io.threads=2
 socket.send.buffer.bytes=1048576
 socket.receive.buffer.bytes=1048576
 socket.request.max.bytes=104857600
-log.dirs=/opt/kafka/log
 num.partitions=2
+delete.topic.enable=$TOPIC_DELETE
+log.dirs=/opt/kafka/log
 log.flush.interval.messages=10000
 log.flush.interval.ms=1000
 log.retention.hours=168
