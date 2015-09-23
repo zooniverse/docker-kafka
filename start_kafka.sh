@@ -61,7 +61,7 @@ fi
 
 if [[ $HOST == "__aws_local_ip" ]]
 then
-    HOST=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+    HOST=$(wget -O - -o /dev/null http://169.254.169.254/latest/meta-data/local-ipv4)
 fi
 
 cat << EOF > "/opt/kafka_$KAFKA_VERSION/config/server.properties"
