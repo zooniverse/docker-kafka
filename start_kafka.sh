@@ -59,6 +59,11 @@ then
   exit 1
 fi
 
+if [[ $HOST == "__aws_local_ip" ]]
+then
+    HOST=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+fi
+
 cat << EOF > "/opt/kafka_$KAFKA_VERSION/config/server.properties"
 broker.id=$BROKER_ID
 port=9092
