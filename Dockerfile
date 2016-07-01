@@ -12,7 +12,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y -q wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN wget -q -O - "http://mirror.sdunix.com/apache/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz" | \
+RUN wget -q -O - "http://www.mirrorservice.org/sites/ftp.apache.org/kafka/$KAFKA_VERSION/kafka_$SCALA_VERSION-$KAFKA_VERSION.tgz" | \
     tar zx -C /opt/
 ADD start_kafka.sh /opt/start_kafka.sh
 RUN chmod +x /opt/start_kafka.sh
